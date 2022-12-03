@@ -1,2 +1,5 @@
-elpa
-auto-save-list
+elpa/
+auto-save-list/
+.local/
+projectile-bookmarks.eld
+recentf
