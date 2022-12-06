@@ -67,11 +67,14 @@
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
-  (add-to-list 'exec-path "~/elixirls")
+  (add-to-list 'exec-path "~/.elixir_ls")
+  (setq lsp-erlang-server-path "~/.erlang_ls/bin")
   :diminish lsp-mode
   :commands (lsp lsp-deferred)
   :ensure t
-  :hook (elixir-mode . lsp)
+  :hook
+  (elixir-mode . lsp)
+  (erlang-mode . lsp)
   :config (lsp-enable-which-key-integration))
 
 
