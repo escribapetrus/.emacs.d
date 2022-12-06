@@ -22,7 +22,8 @@
   :defer t
   :config
   (setq
-   dired-auto-revert-buffer t           ; Revert on re-visiting
+   dired-auto-revert-buffer t
+   ;; Revert on re-visiting
    ;; Better dired flags: `-l' is mandatory, `-a' shows all files, `-h' uses
    ;; human-readable sizes, and `-F' appends file-type classifiers to file names
    ;; (for better highlighting)
@@ -48,7 +49,7 @@
 	("C-x C-b" . ivy-switch-buffer)
 	("M-x" . counsel-M-x))
   :config (setq ivy-initial-inputs-alist nil))
- 
+
 (use-package ivy
   :diminish
   :config (ivy-mode 1))
@@ -56,11 +57,25 @@
 (use-package ivy-rich
   :init (ivy-rich-mode 1))
 
+(use-package which-key :config (which-key-mode))
+
 (use-package projectile
   :config
-  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
   (setq projectile-completion-system 'ivy)
   (projectile-mode +1))
+
+(use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  (add-to-list 'exec-path "~/elixirls")
+  :diminish lsp-mode
+  :commands (lsp lsp-deferred)
+  :ensure t
+  :hook (elixir-mode . lsp)
+  :config (lsp-enable-which-key-integration))
+
+
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 
 (use-package doom-modeline
   :ensure t
@@ -79,6 +94,28 @@
 
 (use-package rainbow-delimiters :hook (prog-mode . rainbow-delimiters-mode))
 
+;; languages
 (use-package markdown-mode :mode ("\\.md\\'" . gfm-mode))
+
+(use-package erlang :defer t)
+
+(use-package elixir-mode)
+
+(use-package reformatter
+  :config
+  (reformatter-define +elixir-format
+    :program "mix"
+    :args '("format" "-"))
+
+  (defun +set-default-directory-to-mix-project-root (original-fun &rest args)
+    (if-let* ((mix-project-root (and buffer-file-name
+                                     (locate-dominating-file buffer-file-name
+                                                             ".formatter.exs"))))
+        (let ((default-directory mix-project-root))
+          (apply original-fun args))
+      (apply original-fun args)))
+  (advice-add '+elixir-format-region :around #'+set-default-directory-to-mix-project-root)
+
+  (add-hook 'elixir-mode-hook #'+elixir-format-on-save-mode))
 
 (provide 'init-packages)
