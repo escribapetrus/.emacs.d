@@ -12,6 +12,8 @@
 (setq use-package-always-ensure t)
 
 ;; list packages here
+(use-package exec-path-from-shell)
+
 (use-package vterm
   :config (add-hook 'vterm-mode-hook
 		    (lambda () (display-line-numbers-mode -1)))
@@ -23,15 +25,9 @@
   :config
   (setq
    dired-auto-revert-buffer t
-   ;; Revert on re-visiting
-   ;; Better dired flags: `-l' is mandatory, `-a' shows all files, `-h' uses
-   ;; human-readable sizes, and `-F' appends file-type classifiers to file names
-   ;; (for better highlighting)
    dired-listing-switches "-laFGh1v --group-directories-first"
-   dired-ls-F-marks-symlinks t          ; -F marks links with @
-   ;; Inhibit prompts for simple recursive operations
+   dired-ls-F-marks-symlinks t 
    dired-recursive-copies 'always
-   ;; Auto-copy to other Dired split window
    dired-dwim-target t))
 
 (use-package counsel
@@ -64,18 +60,6 @@
   (setq projectile-completion-system 'ivy)
   (projectile-mode +1))
 
-(use-package lsp-mode
-  :init
-  (setq lsp-keymap-prefix "C-c l")
-  (add-to-list 'exec-path "~/.elixir_ls")
-  (setq lsp-erlang-server-path "~/.erlang_ls/bin")
-  :diminish lsp-mode
-  :commands (lsp lsp-deferred)
-  :ensure t
-  :hook
-  (elixir-mode . lsp)
-  (erlang-mode . lsp)
-  :config (lsp-enable-which-key-integration))
 
 
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
@@ -103,6 +87,19 @@
 (use-package erlang :defer t)
 
 (use-package elixir-mode)
+
+(use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  ;;(add-to-list 'exec-path "~/.elixir_ls")
+  ;;(setq lsp-erlang-server-path "~/.erlang_ls/bin")
+  :diminish lsp-mode
+  :commands (lsp lsp-deferred)
+  :ensure t
+  :hook
+  (elixir-mode . lsp)
+  (erlang-mode . lsp)
+  :config (lsp-enable-which-key-integration))
 
 (use-package reformatter
   :config
