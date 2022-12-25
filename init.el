@@ -9,7 +9,7 @@
 (require 'init-aesthetics)
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-{global-set-key (kbd "<f5>" 'vterm)
+(global-set-key (kbd "<f5>") 'vterm)
 (delete-selection-mode 1)
 (fset 'yes-or-no-p 'y-or-n-p)
 (unbind-key "C-z")
