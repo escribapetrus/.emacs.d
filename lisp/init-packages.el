@@ -88,6 +88,8 @@
 
 (use-package elixir-mode)
 
+(use-package rust-mode)
+
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
@@ -99,6 +101,7 @@
   :hook
   (elixir-mode . lsp)
   (erlang-mode . lsp)
+  (rust-mode . lsp)
   :config (lsp-enable-which-key-integration))
 
 (use-package reformatter
