@@ -13,6 +13,7 @@
 
 ;; list packages here
 (use-package exec-path-from-shell)
+(exec-path-from-shell-initialize)
 
 (use-package vterm
   :config (add-hook 'vterm-mode-hook
@@ -144,6 +145,8 @@
 (use-package markdown-mode :mode ("\\.md\\'" . gfm-mode))
 
 (use-package erlang :defer t)
+
+(use-package rust-mode)
 
 (use-package elixir-mode)
 

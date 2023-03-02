@@ -6,3 +6,5 @@ auto-save-list/
 .local/
 projectile-bookmarks.eld
 recentf
+*~
+*#

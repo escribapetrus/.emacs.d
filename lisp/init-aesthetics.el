@@ -20,5 +20,5 @@
 (add-to-list 'default-frame-alist '(alpha 95 95))
 ;; set font and font fize
 (add-to-list 'default-frame-alist
-             '(font . "Noto Sans Mono-14"))
+             '(font . "FiraCode Nerd Font Mono-14"))
 (provide 'init-aesthetics)
