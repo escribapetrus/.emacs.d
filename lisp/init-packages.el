@@ -13,22 +13,23 @@
 
 ;; list packages here
 (use-package exec-path-from-shell)
+(exec-path-from-shell-initialize)
 
 (use-package vterm
   :config (add-hook 'vterm-mode-hook
 		    (lambda () (display-line-numbers-mode -1)))
   :bind ("C-o" . other-window))
 
-(use-package dired
-  :ensure nil
-  :defer t
-  :config
-  (setq
-   dired-auto-revert-buffer t
-   dired-listing-switches "-laFGh1v --group-directories-first"
-   dired-ls-F-marks-symlinks t 
-   dired-recursive-copies 'always
-   dired-dwim-target t))
+;; (use-package dired
+;;   :ensure nil
+;;   :defer t
+;;   :config
+;;   (setq
+;;    dired-auto-revert-buffer t
+;;    dired-listing-switches "-laFGh1v"
+;;    dired-ls-F-marks-symlinks t 
+;;    dired-recursive-copies 'always
+;;    dired-dwim-target t))
 
 (use-package counsel
   :diminish t
@@ -84,7 +85,11 @@
 ;; languages
 (use-package markdown-mode :mode ("\\.md\\'" . gfm-mode))
 
-(use-package erlang :defer t)
+(use-package erlang
+  ;; :load-path ("/Users/pschreiber/.asdf/installs/erlang/25.0.4/lib/tools-3.5.3/emacs")
+  :defer t)
+
+(use-package rust-mode)
 
 (use-package elixir-mode)
 
@@ -99,6 +104,7 @@
   :hook
   (elixir-mode . lsp)
   (erlang-mode . lsp)
+  (rust-mode . lsp)
   :config (lsp-enable-which-key-integration))
 
 (use-package reformatter
