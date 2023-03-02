@@ -93,6 +93,8 @@
 
 (use-package elixir-mode)
 
+(use-package rust-mode)
+
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
