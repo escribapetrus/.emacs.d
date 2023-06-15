@@ -7,9 +7,11 @@
 (require 'init-benchmarking)
 (require 'init-packages)
 (require 'init-aesthetics)
+(require 'init-org)
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "<f5>") 'vterm)
+(global-set-key (kbd "<f6>") 'toggle-frame-fullscreen)
 (delete-selection-mode 1)
 (fset 'yes-or-no-p 'y-or-n-p)
 (unbind-key "C-z")
