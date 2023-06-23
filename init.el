@@ -14,4 +14,5 @@
 (global-set-key (kbd "<f6>") 'toggle-frame-fullscreen)
 (delete-selection-mode 1)
 (fset 'yes-or-no-p 'y-or-n-p)
+
 (unbind-key "C-z")
