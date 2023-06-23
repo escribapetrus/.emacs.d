@@ -1,13 +1,20 @@
 (require 'package)
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("nongnu" . "https://stable.melpa.org/packages/")
-			 ("org" . "https://orgmode.org/elpa/")
-			 ("elpa" . "https://elpa.gnu.org/packages/")))
+(setq package-archives
+      '(("gnu" . "https://elpa.gnu.org/packages/")
+      ("melpa" . "https://melpa.org/packages/")
+      ("melpa-stable" . "https://stable.melpa.org/packages/")
+      ("nongnu" . "https://stable.melpa.org/packages/")
+      ("org" . "https://orgmode.org/elpa/")
+      ("elpa" . "https://elpa.gnu.org/packages/")
+      ))
 
 (package-initialize)
 (unless package-archive-contents (package-refresh-contents))
 ;; initialize use-package on non-linux platforms
-(unless (package-installed-p 'use-package) (package-install 'use-package))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
 (require 'use-package)
 (setq use-package-always-ensure t)
 
@@ -22,15 +29,33 @@
 
 (use-package magit :bind ("C-c m s" . magit-status))
 
+(use-package docker
+  :bind ("C-c d" . docker))
+
+(use-package docker-tramp
+  :ensure t)
+
 (use-package dired
   :ensure nil
   :defer t
   :config
   (setq
    dired-auto-revert-buffer t
-   dired-ls-F-marks-symlinks t 
+   dired-ls-F-marks-symlinks t
    dired-recursive-copies 'always
    dired-dwim-target t))
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
+
+(use-package ivy
+  :diminish
+  :config (ivy-mode 1))
+
+(use-package ivy-rich
+  :init (ivy-rich-mode 1))
 
 (use-package counsel
   :diminish t
@@ -47,50 +72,6 @@
 	("C-x C-b" . ivy-switch-buffer)
 	("M-x" . counsel-M-x))
   :config (setq ivy-initial-inputs-alist nil))
-
-(use-package ivy
-  :diminish
-  :config (ivy-mode 1))
-
-(use-package ivy-rich
-  :init (ivy-rich-mode 1))
-
-(use-package corfu :init (global-corfu-mode))
-
-(use-package cape
-  ;; Bind dedicated completion commands
-  ;; Alternative prefix keys: C-c p, M-p, M-+, ...
-  :bind (("C-c p p" . completion-at-point) ;; capf
-         ("C-c p t" . complete-tag)        ;; etags
-         ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
-         ("C-c p h" . cape-history)
-         ("C-c p f" . cape-file)
-         ("C-c p k" . cape-keyword)
-         ("C-c p s" . cape-symbol)
-         ("C-c p a" . cape-abbrev)
-         ("C-c p i" . cape-ispell)
-         ("C-c p l" . cape-line)
-         ("C-c p w" . cape-dict)
-         ("C-c p \\" . cape-tex)
-         ("C-c p _" . cape-tex)
-         ("C-c p ^" . cape-tex)
-         ("C-c p &" . cape-sgml)
-         ("C-c p r" . cape-rfc1345))
-  :init
-  ;; Add `completion-at-point-functions', used by `completion-at-point'.
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  ;;(add-to-list 'completion-at-point-functions #'cape-history)
-  ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
-  ;;(add-to-list 'completion-at-point-functions #'cape-tex)
-  ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-  ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-  ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-  ;;(add-to-list 'completion-at-point-functions #'cape-ispell)
-  ;;(add-to-list 'completion-at-point-functions #'cape-dict)
-  ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
-  ;;(add-to-list 'completion-at-point-functions #'cape-line)
-)
 
 (use-package which-key :config (which-key-mode))
 
@@ -136,6 +117,44 @@
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python3" . python-mode))
 
+(use-package haskell-mode
+  :ensure t)
+
+(use-package terraform-mode :ensure t)
+
+(use-package flycheck-haskell
+  :ensure t
+  :hook (haskell-mode . flycheck-haskell-setup))
+
+(add-hook 'haskell-mode-hook 'haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+(setq haskell-process-type 'stack-ghci)
+(setq haskell-compile-cabal-build-command "stack build")
+
+(use-package go-mode
+  :ensure t
+  :hook (go-mode . (lambda ()
+                     (add-hook 'before-save-hook 'gofmt-before-save)
+                     (setq-local tab-width 4))))
+
+(use-package go-eldoc
+  :ensure t
+  :hook (go-mode . go-eldoc-setup))
+
+(use-package go-projectile
+  :ensure t
+  :bind (("C-c p p" . go-projectile-switch-project)
+          ("C-c p f" . go-projectile-test-package)
+          ("C-c p a" . go-projectile-toggle-between-implementation-and-test)))
+
+(use-package go-guru
+  :ensure t)
+
+(use-package go-rename
+  :ensure t
+  :bind (("C-c r" . go-rename)))
+
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
@@ -148,7 +167,14 @@
   (elixir-mode . lsp)
   (erlang-mode . lsp)
   (rust-mode . lsp)
+  (terraform-mode . lsp)
   :config (lsp-enable-which-key-integration))
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+
+
 
 (use-package reformatter
   :config
