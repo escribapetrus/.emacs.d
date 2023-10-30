@@ -1,18 +1,32 @@
+;;; init.el --- Core Emacs configurations -*- lexical-binding: t -*-
+;;; Commentary:
+;;; Code:
+(require 'package)
+(require 'use-package-ensure)
+
+(setq package-archives
+  '(("melpa-stable" . "https://stable.melpa.org/packages/")
+     ("org" . "https://orgmode.org/elpa/")
+     ("elpa" . "https://elpa.gnu.org/packages/")
+     ("melpa" . "https://melpa.org/packages/")
+      ))
+
+;; initialize use-package on non-linux platforms
+(package-initialize)
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(setq use-package-always-ensure t)
+(unless package-archive-contents (package-refresh-contents))
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
-(setq user-full-name "Pedro Schreiber")
-(setq custom-file (expand-file-name "lisp/custom.el" user-emacs-directory))
-(load custom-file 'noerror)
-
+(require 'init-emacs)
 (require 'init-benchmarking)
 (require 'init-packages)
 (require 'init-aesthetics)
 (require 'init-org)
+(require 'init-languages)
 
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(global-set-key (kbd "<f5>") 'vterm)
-(global-set-key (kbd "<f6>") 'toggle-frame-fullscreen)
-(delete-selection-mode 1)
-(fset 'yes-or-no-p 'y-or-n-p)
 
-(unbind-key "C-z")
+

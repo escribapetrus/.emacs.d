@@ -1,10 +1,6 @@
-.cache/
-.lsp*
-projects
-elpa/
-auto-save-list/
-.local/
-projectile-bookmarks.eld
-recentf
-*~
-*#
+/*
+!.gitignore
+!init.el
+!README.org
+!lisp/
+!org/

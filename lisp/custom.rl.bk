@@ -3,10 +3,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("4c8c013db75a02544abab5387812a0d3abb5eb8ce67f0f00d332f2e365c18b24" default))
  '(package-selected-packages
-   '(company-ghc company-capf company-erlang company-lsp rust-mode exec-path-from-shell reformatter elixir-mode erlang lsp-ivy lsp-mode which-key ivy-rich rainbow-delimiters solaire-mode rainbow-mode move-text counsel vterm use-package ivy doom-modeline)))
+   '(elisp-autofmt web-mode ox-spectacle ox-gfm reformatter lsp-ui go-projectile go-eldoc go-mode flycheck-haskell terraform-mode haskell-mode python-mode elixir-mode typescript-mode rust-mode erlang rainbow-delimiters rebecca-theme solaire-mode rainbow-mode move-text doom-modeline lsp-ivy projectile which-key counsel ivy-rich ivy flycheck docker magit vterm exec-path-from-shell)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
