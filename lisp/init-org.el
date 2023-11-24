@@ -28,7 +28,8 @@
     (awk . t)
     (fortran . t)
     (python . t)
-    ;; (elixir . t)
+    (elixir . t)
+    (restclient . t)
     ;; (haskell . t)
     ;; (rust . t)
     ;; (http . t)
@@ -36,5 +37,8 @@
 
 (use-package ox-gfm)
 (use-package ox-spectacle)
+(use-package ob-elixir)
+(use-package ob-restclient)
+
 
 (provide 'init-org)

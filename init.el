@@ -23,9 +23,9 @@
 
 (require 'init-emacs)
 (require 'init-benchmarking)
+(require 'init-org)
 (require 'init-packages)
 (require 'init-aesthetics)
-(require 'init-org)
 (require 'init-languages)
 
 

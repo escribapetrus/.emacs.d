@@ -32,7 +32,6 @@
 
 (use-package restclient :defer t)
 
-
 (use-package helpful)
 
 (use-package flycheck
