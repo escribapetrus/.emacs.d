@@ -10,25 +10,14 @@
  (org-pretty-entities t)
  (org-pretty-entities-include-sub-superscripts nil)
  (org-babel-default-header-args:python '((:results . "output")))
+ (org-hide-emphasis-markers t)
  (org-latex-compiler "xelatex")
-  (org-latex-pdf-process '("xelatex %f"))
+ (org-latex-pdf-process '("xelatex %f"))
  ;; (org-babel-python-command "python3")
-  ;; (org-src-fontify-natively t)
+ ;; (org-src-fontify-natively t)
  ;; (org-src-tab-acts-natively t)
- ;; (org-hide-emphasis-markers t)
  ;; (org-export-with-sub-superscripts nil)
-  ;;(setq org-latex-classes nil)
-
-  
- :config
-  (add-to-list 'org-latex-classes
-             '("simple-resume-cv"
-               "\\documentclass{simple-resume-cv}"
-               ("\\part{%s}" . "\\part*{%s}")
-               ("\\chapter{%s}" . "\\chapter*{%s}")
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+ ;; (setq org-latex-classes nil)
 
   (org-babel-do-load-languages
   'org-babel-load-languages
@@ -44,12 +33,10 @@
     (restclient . t)
      )))
 
-
-
-
 (use-package ox-gfm)
 (use-package ox-spectacle)
 (use-package ob-elixir)
 (use-package ob-restclient)
 
 (provide 'init-org)
+;;; init-org.el ends here
