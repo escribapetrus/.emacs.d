@@ -19,16 +19,7 @@
   (add-hook 'vterm-mode-hook
 	    (lambda () (display-line-numbers-mode -1)))
   :bind
-  ("C-o" . other-window)
-  ("<f6>" . toggle-frame-fullscreen))
-
-(use-package multi-vterm :bind ("<f2>" . multi-vterm-project))
-
-(use-package magit)
-
-(use-package docker :bind ("C-c d" . docker))
-
-(use-package kubernetes :commands (kubernetes-overview))
+  ("C-o" . other-window))
 
 (use-package restclient :defer t)
 
@@ -66,6 +57,30 @@
 	("C-x C-b" . ivy-switch-buffer)
 	("M-x" . counsel-M-x))
   :config (setq ivy-initial-inputs-alist nil))
+
+;; (use-package corfu
+  ;; Optional customizations
+  ;; :custom
+  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  ;; (corfu-auto t)                 ;; Enable auto completion
+  ;; (corfu-separator ?\s)          ;; Orderless field separator
+  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
+  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+
+  ;; Enable Corfu only for certain modes.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+
+  ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
+  ;; be used globally (M-/).  See also the customization variable
+  ;; `global-corfu-modes' to exclude certain modes.
+;;  :init
+ ;; (global-corfu-mode))
 
 (use-package which-key :config (which-key-mode))
 

@@ -19,13 +19,19 @@
 
 (use-package erlang :defer t)
 
-(use-package rust-mode)
+(use-package rust-mode
+  :hook (rust-mode . eglot-ensure))
 
 (use-package typescript-mode)
 
-(use-package elixir-mode)
-
-(use-package rust-mode)
+(use-package elixir-mode
+  :config (projectile-register-project-type 'elixir '("mix.exs")
+                                  :project-file "mix.exs"
+				  :compile "mix compile"
+				  :test "mix test"
+				  :run "iex -S mix")
+  :hook  ('elixir-mode-hook #'+elixir-format-on-save-mode)
+         (elixir-mode . eglot-ensure))
 
 (use-package python-mode
   :ensure t
@@ -38,6 +44,12 @@
 
 (use-package go-mode
   :ensure t
+  :config (projectile-register-project-type 'go '("go.mod")
+                                  :project-file "go.mod"
+				  :compile "go build"
+				  :test "go test"
+				  :run "go run")
+
   :hook (go-mode . (lambda ()
                      (add-hook 'before-save-hook 'gofmt-before-save)
                      (setq-local tab-width 4))))
@@ -59,10 +71,9 @@
   :ensure t
   :bind (("C-c r" . go-rename)))
 
-;; (use-package
-;;  eglot
-;;  :ensure nil
-;;  :config (add-to-list 'eglot-server-programs '(elixir-ts-mode "language_server.sh")))
+(use-package eglot
+  :ensure nil
+  :config (add-to-list 'eglot-server-programs '(elixir-mode "/usr/local/bin/lexical/bin/start_lexical.sh")))
 
 (use-package reformatter
   :config
@@ -77,9 +88,7 @@
         (let ((default-directory mix-project-root))
           (apply original-fun args))
       (apply original-fun args)))
-  (advice-add '+elixir-format-region :around #'+set-default-directory-to-mix-project-root)
-
-  (add-hook 'elixir-mode-hook #'+elixir-format-on-save-mode))
+  (advice-add '+elixir-format-region :around #'+set-default-directory-to-mix-project-root))
 
 (use-package
  elisp-autofmt
