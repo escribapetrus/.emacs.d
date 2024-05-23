@@ -30,8 +30,9 @@
 				  :compile "mix compile"
 				  :test "mix test"
 				  :run "iex -S mix")
-  :hook  ('elixir-mode-hook #'+elixir-format-on-save-mode)
-         (elixir-mode . eglot-ensure))
+  :hook
+  (before-save . elixir-format)
+  (elixir-mode . eglot-ensure))
 
 (use-package python-mode
   :ensure t
@@ -42,17 +43,15 @@
 
 (use-package terraform-mode :ensure t)
 
-(use-package go-mode
-  :ensure t
-  :config (projectile-register-project-type 'go '("go.mod")
-                                  :project-file "go.mod"
-				  :compile "go build"
-				  :test "go test"
-				  :run "go run")
-
-  :hook (go-mode . (lambda ()
-                     (add-hook 'before-save-hook 'gofmt-before-save)
-                     (setq-local tab-width 4))))
+;; (use-package go-mode
+;;   :ensure t
+;;   :config (projectile-register-project-type 'go '("go.mod")
+;;                                   :project-file "go.mod"
+;; 				  :compile "go build"
+;; 				  :test "go test"
+;; 				  :run "go run")
+;;   :hook
+;;   (before-save . gofmt))
 
 (use-package go-eldoc
   :ensure t
@@ -75,23 +74,7 @@
   :ensure nil
   :config (add-to-list 'eglot-server-programs '(elixir-mode "/usr/local/bin/lexical/bin/start_lexical.sh")))
 
-(use-package reformatter
-  :config
-  (reformatter-define +elixir-format
-    :program "mix"
-    :args '("format" "-"))
-
-  (defun +set-default-directory-to-mix-project-root (original-fun &rest args)
-    (if-let* ((mix-project-root (and buffer-file-name
-                                     (locate-dominating-file buffer-file-name
-                                                             ".formatter.exs"))))
-        (let ((default-directory mix-project-root))
-          (apply original-fun args))
-      (apply original-fun args)))
-  (advice-add '+elixir-format-region :around #'+set-default-directory-to-mix-project-root))
-
-(use-package
- elisp-autofmt
+(use-package elisp-autofmt
  :commands (elisp-autofmt-mode elisp-autofmt-buffer)
  :hook (emacs-lisp-mode . elisp-autofmt-mode))
 
