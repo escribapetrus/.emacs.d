@@ -58,8 +58,8 @@
   :project-file "go.mod"
   :compile "go build"
   :test "go test"
-  :run "go run")
- :hook (go-mode . gofmt-before-save) (go-mode . eglot-ensure))
+  :run "go run"))
+;; :hook (go-mode . gofmt-before-save) (go-mode . eglot-ensure))
 
 (use-package go-eldoc :ensure t :hook (go-mode . go-eldoc-setup))
 
@@ -86,7 +86,7 @@
 (use-package
  elisp-autofmt
  :ensure t
- :bind (("C-c f" . elisp-autofmt-buffer))
- :hook (before-save . elisp-autofmt-buffer))
+ :bind (("C-c f" . elisp-autofmt-buffer)))
+;; :hook (before-save . elisp-autofmt-buffer))
 
 (provide 'init-languages)
