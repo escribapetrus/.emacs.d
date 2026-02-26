@@ -9,7 +9,6 @@
  (org-pretty-entities t)
  (org-pretty-entities-include-sub-superscripts nil)
  (org-babel-default-header-args:python '((:results . "output")))
- (org-hide-emphasis-markers t)
  (org-latex-compiler "xelatex")
  (org-latex-pdf-process '("xelatex %f"))
  (org-hide-emphasis-markers t)

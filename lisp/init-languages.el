@@ -16,7 +16,8 @@
  web-mode
  :config
  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
- (add-to-list 'auto-mode-alist '("\\.eex?\\'" . web-mode)))
+ (add-to-list 'auto-mode-alist '("\\.eex?\\'" . web-mode))
+ (add-to-list 'auto-mode-alist '("\\.heex?\\'" . web-mode)))
 
 (use-package markdown-mode :mode ("\\.md\\'" . gfm-mode))
 
@@ -24,7 +25,7 @@
 
 (use-package rust-mode :hook (rust-mode . eglot-ensure))
 
-(use-package typescript-mode)
+(use-package typescript-mode :hook (typescript-mode . eglot-ensure))
 
 (use-package
  elixir-mode
@@ -39,18 +40,17 @@
  :hook (before-save . elixir-format) (elixir-mode . eglot-ensure))
 
 (use-package
- python-mode
- :ensure t
- :mode ("\\.py\\'" . python-mode)
- :interpreter ("python3" . python-mode))
+ python
+ :ensure nil
+ :hook (python-mode . eglot-ensure))
 
-(use-package haskell-mode :ensure t)
+(use-package haskell-mode)
 
-(use-package terraform-mode :ensure t)
+(use-package terraform-mode)
 
 (use-package
  go-mode
- :ensure t
+ :hook (go-mode . eglot-ensure)
  :config
  (projectile-register-project-type
   'go
@@ -58,22 +58,10 @@
   :project-file "go.mod"
   :compile "go build"
   :test "go test"
-  :run "go run"))
-;; :hook (go-mode . gofmt-before-save) (go-mode . eglot-ensure))
+  :run "go run")
+ (add-hook 'before-save-hook #'gofmt-before-save))
 
-(use-package go-eldoc :ensure t :hook (go-mode . go-eldoc-setup))
-
-(use-package
- go-projectile
- :ensure t
- :bind
- (("C-c p p" . go-projectile-switch-project)
-  ("C-c p f" . go-projectile-test-package)
-  ("C-c p a" . go-projectile-toggle-between-implementation-and-test)))
-
-(use-package go-guru :ensure t)
-
-(use-package go-rename :ensure t :bind (("C-c r" . go-rename)))
+(use-package go-eldoc :hook (go-mode . go-eldoc-setup))
 
 (use-package
  eglot
@@ -81,12 +69,13 @@
  :config
  (add-to-list
   'eglot-server-programs
-  '(elixir-mode "/usr/local/bin/lexical/bin/start_lexical.sh")))
+  '(elixir-mode "expert" "--stdio"))
+ (add-to-list
+  'eglot-server-programs
+  '(go-mode "gopls")))
 
 (use-package
  elisp-autofmt
- :ensure t
  :bind (("C-c f" . elisp-autofmt-buffer)))
-;; :hook (before-save . elisp-autofmt-buffer))
 
 (provide 'init-languages)

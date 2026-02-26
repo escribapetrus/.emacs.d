@@ -8,11 +8,9 @@
   :custom
   (user-full-name "Pedro Schreiber")
   (custom-file (expand-file-name "lisp/.custom.el" user-emacs-directory))
-  (load custom-file 'noerror)
   (bidi-paragraph-direction 'left-to-right)
   (use-short-answers t)
   (load-prefer-newer t)
-  (bidi-paragraph-direction 'left-to-right)
   (inhibit-startup-screen t)
   (indent-tabs-mode nil)
   (lisp-indent-function nil)

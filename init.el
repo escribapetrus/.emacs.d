@@ -6,10 +6,8 @@
 
 (setq package-archives
   '(("melpa-stable" . "https://stable.melpa.org/packages/")
-     ("org" . "https://orgmode.org/elpa/")
      ("elpa" . "https://elpa.gnu.org/packages/")
-     ("melpa" . "https://melpa.org/packages/")
-      ))
+     ("melpa" . "https://melpa.org/packages/")))
 
 ;; initialize use-package on non-linux platforms
 (package-initialize)

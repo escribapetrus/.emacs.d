@@ -1,4 +1,4 @@
-;;; init.el --- External package configurations -*- lexical-binding: t -*-
+;;; init-packages.el --- External package configurations -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; Code:
 
@@ -26,70 +26,46 @@
 (use-package helpful)
 
 (use-package flycheck
-  :ensure t
   :init (global-flycheck-mode))
 
-(use-package eldoc :ensure t :diminish eldoc-mode)
+(use-package eldoc :ensure nil :diminish eldoc-mode)
 
-(use-package autorevert :ensure t :diminish auto-revert-mode)
+(use-package autorevert :ensure nil :diminish auto-revert-mode)
 
-(use-package ivy
-  :diminish
-  :config (ivy-mode 1))
+;; Completion framework: vertico + consult + orderless + marginalia
+(use-package vertico
+  :init (vertico-mode)
+  :custom (vertico-cycle t))
 
-(use-package ivy-rich
-  :init (ivy-rich-mode 1))
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion)))))
 
-(use-package vertico :init (vertico-mode))
+(use-package marginalia
+  :init (marginalia-mode))
 
-(use-package counsel
-  :diminish t
-  :config (setq ivy-use-virtual-buffers t
-	confirm-nonexistent-file-or-buffer t
-	ivy-count-format "(%d%d) ")
-  (define-key ivy-minibuffer-map (kbd "C-j") #'ivy-immediate-done)
-  (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
-  :init (ivy-mode 1)
-  :bind(("C-c C-r" . ivy-resume)
-	("C-x C-f" . counsel-find-file)
-	("C-s" . swiper)
-	("C-x b" . ivy-switch-buffer)
-	("C-x C-b" . ivy-switch-buffer)
-	("M-x" . counsel-M-x))
-  :config (setq ivy-initial-inputs-alist nil))
+(use-package consult
+  :bind
+  (("C-s" . consult-line)
+   ("C-x b" . consult-buffer)
+   ("C-x C-b" . consult-buffer)
+   ("M-g g" . consult-goto-line)
+   ("M-s r" . consult-ripgrep)))
 
-;; (use-package corfu
-  ;; Optional customizations
-  ;; :custom
-  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  ;; (corfu-auto t)                 ;; Enable auto completion
-  ;; (corfu-separator ?\s)          ;; Orderless field separator
-  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-  ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
-  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
-
-  ;; Enable Corfu only for certain modes.
-  ;; :hook ((prog-mode . corfu-mode)
-  ;;        (shell-mode . corfu-mode)
-  ;;        (eshell-mode . corfu-mode))
-
-  ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
-  ;; be used globally (M-/).  See also the customization variable
-  ;; `global-corfu-modes' to exclude certain modes.
-;;  :init
- ;; (global-corfu-mode))
+;; In-buffer completion
+(use-package corfu
+  :custom
+  (corfu-auto t)
+  (corfu-cycle t)
+  :init (global-corfu-mode))
 
 (use-package which-key :config (which-key-mode))
 
 (use-package projectile
   :config
-  (setq projectile-completion-system 'ivy)
+  (setq projectile-completion-system 'default)
   (projectile-mode +1))
-
-(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 
 (use-package move-text
   :config
