@@ -1,0 +1,155 @@
+#+TITLE: .emacs.d
+#+AUTHOR: Pedro Schreiber
+
+Personal Emacs configuration. Requires Emacs 29+ (for tree-sitter and eglot).
+
+* Installation
+
+** Emacs
+
+#+begin_src sh
+# macOS
+brew install emacs-plus@29 --with-native-comp
+
+# or emacs-mac
+brew tap railwaycat/emacsmacport
+brew install emacs-mac
+#+end_src
+
+** Dependencies
+
+#+begin_src sh
+# Required
+brew install aspell          # spell checking
+brew install ripgrep         # consult-ripgrep
+
+# Language servers (used via eglot)
+# Elixir — Expert LSP (https://github.com/elixir-lang/expert)
+gh release download v0.1.0-rc.4 --repo elixir-lang/expert \
+  --pattern "expert_darwin_arm64" --output ~/.local/bin/expert
+chmod +x ~/.local/bin/expert
+
+# Go
+go install golang.org/x/tools/gopls@latest
+
+# Python
+pip install pyright
+
+# Rust
+rustup component add rust-analyzer
+
+# TypeScript
+npm install -g typescript-language-server typescript
+#+end_src
+
+** Setup
+
+#+begin_src sh
+git clone https://github.com/escribapetrus/.emacs.d ~/.emacs.d
+#+end_src
+
+On first launch, Emacs will automatically install all packages via =use-package=.
+Tree-sitter grammars can be installed with =M-x treesit-install-language-grammar=.
+
+* Structure
+
+| File                   | Purpose                                     |
+|------------------------+---------------------------------------------|
+| =init.el=              | Package archives, use-package bootstrap     |
+| =lisp/init-emacs.el=   | Core Emacs settings, keybindings, treesit   |
+| =lisp/init-packages.el= | Completion, project management, UI packages |
+| =lisp/init-languages.el= | Language modes, eglot LSP, formatters      |
+| =lisp/init-aesthetics.el= | Theme (rebecca), modeline, font, UI chrome |
+| =lisp/init-org.el=     | Org-mode, babel, export backends            |
+| =lisp/init-benchmarking.el= | Startup time profiling                 |
+| =lisp/.custom.el=      | Auto-generated customize settings           |
+
+* Key Plugins
+
+** Completion
+
+- *vertico* — vertical minibuffer completion UI
+- *orderless* — flexible matching (space-separated, out-of-order)
+- *consult* — enhanced search and navigation commands
+- *marginalia* — rich annotations in the minibuffer
+- *corfu* — in-buffer popup completion (auto-triggers as you type)
+
+** Project Management
+
+- *projectile* — project detection, compile/test/run commands
+- *which-key* — shows available keybindings after a prefix
+
+** Languages & LSP
+
+- *eglot* (built-in) — LSP client for all languages
+  - Elixir: Expert LSP
+  - Go: gopls (+ gofmt on save)
+  - Python: pyright
+  - Rust: rust-analyzer
+  - TypeScript: typescript-language-server
+- *flycheck* — on-the-fly syntax checking
+- *flyspell* — spell checking (text + comments in code)
+- *web-mode* — HTML, EEx, HEEx templates
+- *elisp-autofmt* — Emacs Lisp formatter
+
+** UI & Appearance
+
+- *rebecca-theme* — dark purple color theme
+- *doom-modeline* — modern mode line
+- *solaire-mode* — distinguishes file vs non-file buffers
+- *rainbow-delimiters* — colored matching parentheses
+- *rainbow-mode* — highlights color codes inline
+
+** Other
+
+- *vterm* — terminal emulator inside Emacs
+- *restclient* — HTTP request scratch buffers
+- *helpful* — improved help buffers
+- *move-text* — move lines/regions up and down
+
+* Keybindings
+
+** General
+
+| Key         | Action                   |
+|-------------+--------------------------|
+| =C-o=       | Switch to other window   |
+| =C-q=       | Kill buffer              |
+| =C-z=       | /Unbound/ (no suspend)   |
+| =C-+=       | Increase text size       |
+| =C--=       | Decrease text size       |
+| =Escape=    | Quit (like =C-g=)       |
+| =F5=        | Open vterm               |
+| =F6=        | Toggle fullscreen        |
+
+** Search & Navigation
+
+| Key         | Action                   |
+|-------------+--------------------------|
+| =C-s=       | Search in buffer (consult-line) |
+| =C-x b=     | Switch buffer (consult)  |
+| =C-x C-b=   | Switch buffer (consult)  |
+| =M-g g=     | Go to line               |
+| =M-s r=     | Ripgrep across project   |
+
+** Project (projectile)
+
+| Key         | Action                   |
+|-------------+--------------------------|
+| =C-c C-c=   | Compile project          |
+| =C-c C-t=   | Test project             |
+| =C-c C-r=   | Run project              |
+
+** Org
+
+| Key         | Action                   |
+|-------------+--------------------------|
+| =C-c a=     | Org agenda               |
+
+** Formatting
+
+| Key         | Action                   |
+|-------------+--------------------------|
+| =C-c f=     | Format elisp buffer      |
+
+Elixir and Go files are auto-formatted on save.
