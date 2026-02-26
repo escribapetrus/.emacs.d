@@ -32,6 +32,18 @@
 
 (use-package autorevert :ensure nil :diminish auto-revert-mode)
 
+;; Persist minibuffer history across sessions (makes vertico smarter)
+(use-package savehist :ensure nil :init (savehist-mode))
+
+;; Track recently opened files
+(use-package recentf
+  :ensure nil
+  :init (recentf-mode)
+  :custom (recentf-max-saved-items 100))
+
+;; Auto-close brackets and quotes
+(use-package elec-pair :ensure nil :init (electric-pair-mode))
+
 ;; Completion framework: vertico + consult + orderless + marginalia
 (use-package vertico
   :init (vertico-mode)
@@ -50,8 +62,21 @@
   (("C-s" . consult-line)
    ("C-x b" . consult-buffer)
    ("C-x C-b" . consult-buffer)
+   ("C-x C-r" . consult-recent-file)
    ("M-g g" . consult-goto-line)
    ("M-s r" . consult-ripgrep)))
+
+;; Context actions on minibuffer candidates
+(use-package embark
+  :bind
+  (("C-." . embark-act)
+   ("C-;" . embark-dwim))
+  :config
+  (setq prefix-help-command #'embark-prefix-help-command))
+
+(use-package embark-consult
+  :after (embark consult)
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; In-buffer completion
 (use-package corfu
@@ -59,6 +84,12 @@
   (corfu-auto t)
   (corfu-cycle t)
   :init (global-corfu-mode))
+
+;; Extra completion-at-point sources for corfu
+(use-package cape
+  :init
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file))
 
 (use-package which-key :config (which-key-mode))
 
@@ -76,5 +107,14 @@
 (use-package solaire-mode :init (solaire-global-mode +1))
 
 (use-package rainbow-delimiters :hook (prog-mode . rainbow-delimiters-mode))
+
+;; Git
+(use-package magit :bind (("C-x g" . magit-status)))
+
+(use-package diff-hl
+  :init (global-diff-hl-mode)
+  :hook
+  (magit-pre-refresh . diff-hl-magit-pre-refresh)
+  (magit-post-refresh . diff-hl-magit-post-refresh))
 
 (provide 'init-packages)

@@ -73,6 +73,8 @@ Tree-sitter grammars can be installed with =M-x treesit-install-language-grammar
 - *consult* — enhanced search and navigation commands
 - *marginalia* — rich annotations in the minibuffer
 - *corfu* — in-buffer popup completion (auto-triggers as you type)
+- *cape* — extra completion sources for corfu (buffer words, file paths)
+- *embark* — context actions on any minibuffer candidate
 
 ** Project Management
 
@@ -100,8 +102,16 @@ Tree-sitter grammars can be installed with =M-x treesit-install-language-grammar
 - *rainbow-delimiters* — colored matching parentheses
 - *rainbow-mode* — highlights color codes inline
 
+** Git
+
+- *magit* — full git porcelain inside Emacs
+- *diff-hl* — git change indicators in the fringe
+
 ** Other
 
+- *savehist* — persists minibuffer history across sessions
+- *recentf* — tracks recently opened files
+- *electric-pair-mode* — auto-close brackets and quotes
 - *vterm* — terminal emulator inside Emacs
 - *restclient* — HTTP request scratch buffers
 - *helpful* — improved help buffers
@@ -129,8 +139,11 @@ Tree-sitter grammars can be installed with =M-x treesit-install-language-grammar
 | =C-s=       | Search in buffer (consult-line) |
 | =C-x b=     | Switch buffer (consult)  |
 | =C-x C-b=   | Switch buffer (consult)  |
+| =C-x C-r=   | Recent files (consult)   |
 | =M-g g=     | Go to line               |
 | =M-s r=     | Ripgrep across project   |
+| =C-.=       | Embark act (context menu on candidate) |
+| =C-;=       | Embark dwim (default action) |
 
 ** Project (projectile)
 
@@ -139,6 +152,12 @@ Tree-sitter grammars can be installed with =M-x treesit-install-language-grammar
 | =C-c C-c=   | Compile project          |
 | =C-c C-t=   | Test project             |
 | =C-c C-r=   | Run project              |
+
+** Git
+
+| Key         | Action                   |
+|-------------+--------------------------|
+| =C-x g=     | Magit status             |
 
 ** Org
 
